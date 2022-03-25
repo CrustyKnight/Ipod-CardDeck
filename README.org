@@ -1,0 +1,6 @@
+#+TITLE: RPN card deck simulator for rockbox on ipod
+#+AUTHOR: Sam Cormode
+
+* RPN-Ipod
+This is a small lua project to create a card deck simulator for an Ipod classic (6th gen?) running
+[[https://www.rockbox.org][rockbox]].
