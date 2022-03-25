@@ -1,0 +1,17 @@
+* TODOS
+** TODO: Icons
+** TODO: Better menu (clear the screen after an option has been selected)
+** TODO: Default screen (Maybe like showing the top card of discard, how many cards left in deck, and how many cards in discard)
+** TODO: Save and load a deck
+*** TODO: Make an easily readable and writable format
+Probably just something like
+#+BEGIN_SRC
+H, 13
+H, 12
+H, 11
+H, 10
+H, 9
+H, 8
+#+END_SRC
+Then I use text parsing to get each line, split it into suite and number, then add that to a table
+
