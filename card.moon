@@ -6,6 +6,9 @@ math.randomseed(rb.current_tick!)
 require "actions"
 _print = require "print"
 _print.opt.overflow("auto")
+_draw = require "draw"
+_lcd = require "lcd"
+my_lcd = require "myLCD"
 options = {
   "Continue",
   "Reshuffle deck",
@@ -26,7 +29,7 @@ class Deck
     for i = #@deck, 2, -1
       j = math.random(i)
       @deck[i], @deck[j] = @deck[j], @deck[i]
-  draw: =>
+  draw_card: =>
     card = table.remove(@deck)
     table.insert(@discard, card)
     card
@@ -40,23 +43,23 @@ class Deck
     msg ..= "[discard]\n"
     for i, v in ipairs(@discard)
       msg ..= "#{string.sub(v.s, 1, 1)}, #{v.i}\n"
-
-draw_decks = (deck) ->
-  _print.clear!
-  if deck\left! > 0
-    -- _print.f("%d", deck\draw().i)
-    ps = rb.lcd_puts
-    card = deck\draw!
-    s = string.sub(card.s, 1, 1)
-    n = card.i
-    ps(3, 9, "+------+")
-    ps(4, 9, "|#{s}     |")
-    ps(5, 9, "|      |")
-    ps(6, 9, "|      |")
-    ps(7, 9, "|     #{s}|")
-    ps(8, 9, "+------+")
-    rb.lcd_update!
-
+  draw: =>
+    _print.clear!
+    if @left! > 0
+      ps = rb.lcd_putsxy
+      card = @draw_card!
+      s = string.sub(card.s, 1, 1)
+      -- my_lcd.drawrect(x,y,width,height)
+      my_lcd.drawrect(20,20,100,100)
+      --ps(3, 9, "+------+")
+      ps(20, 20, "#{s}")
+      ps(50, 50, "#{card.i}")
+      --ps(5, 9, "|      |")
+      --ps(6, 9, "|      |")
+      --ps(7, 9, "|     #{s}|")
+      ps(90, 90, "#{s}")
+      --ps(8, 9, "+------+")
+      rb.lcd_update!
 
 deck = Deck!
 while true
@@ -65,7 +68,7 @@ while true
     _print.clear!
     _print.f("Drawing card...")
     if deck\left! > 0
-      draw_decks(deck)
+      deck\draw!
       --card = deck\draw!
       --_print.f("Your card was a %d of %ss", card.i, card.s)
     else

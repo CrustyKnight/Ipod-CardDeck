@@ -2,6 +2,9 @@
 ** TODO: Icons
 ** TODO: Better menu (clear the screen after an option has been selected)
 ** TODO: Default screen (Maybe like showing the top card of discard, how many cards left in deck, and how many cards in discard)
+Like show two decks, the top of the discard and the top of the deck. maybe an
+image of like a card back for the back of the deck?  also maybe a counter for
+how many cards left in pile.
 ** TODO: Save and load a deck
 *** TODO: Make an easily readable and writable format
 Probably just something like

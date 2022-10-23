@@ -2,6 +2,9 @@ math.randomseed(rb.current_tick())
 require("actions")
 local _print = require("print")
 _print.opt.overflow("auto")
+local _draw = require("draw")
+local _lcd = require("lcd")
+local my_lcd = require("myLCD")
 local options = {
   "Continue",
   "Reshuffle deck",
@@ -20,7 +23,7 @@ do
         self.deck[i], self.deck[j] = self.deck[j], self.deck[i]
       end
     end,
-    draw = function(self)
+    draw_card = function(self)
       local card = table.remove(self.deck)
       table.insert(self.discard, card)
       return card
@@ -37,6 +40,19 @@ do
       msg = msg .. "[discard]\n"
       for i, v in ipairs(self.discard) do
         msg = msg .. tostring(string.sub(v.s, 1, 1)) .. ", " .. tostring(v.i) .. "\n"
+      end
+    end,
+    draw = function(self)
+      _print.clear()
+      if self:left() > 0 then
+        local ps = rb.lcd_putsxy
+        local card = self:draw_card()
+        local s = string.sub(card.s, 1, 1)
+        my_lcd.drawrect(20, 20, 100, 100)
+        ps(20, 20, tostring(s))
+        ps(50, 50, tostring(card.i))
+        ps(90, 90, tostring(s))
+        return rb.lcd_update()
       end
     end
   }
@@ -72,14 +88,6 @@ do
   _base_0.__class = _class_0
   Deck = _class_0
 end
-local draw_decks
-draw_decks = function(deck)
-  _print.clear()
-  if deck:left() > 0 then
-    rb.lcd_puts(10, 8, tostring(deck:draw().i))
-    return rb.lcd_update()
-  end
-end
 local deck = Deck()
 while true do
   local action = rb.get_plugin_action(-1)
@@ -87,7 +95,7 @@ while true do
     _print.clear()
     _print.f("Drawing card...")
     if deck:left() > 0 then
-      draw_decks(deck)
+      deck:draw()
     else
       _print.f("No cards remaining")
     end
